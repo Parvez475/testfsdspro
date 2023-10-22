@@ -1,5 +1,5 @@
 from flask import Flask , render_template, request
-import request
+import requests 
 
 app = Flask(__name__)
 
@@ -7,21 +7,20 @@ app = Flask(__name__)
 def homepage():
     return render_template("index.html")
 
-@app.route("weatherapp",methods = ['POST,GET'])
+
+@app.route("/weatherapp",methods = ['POST' , "GET"])
 def get_weatherdata():
     url = "https://api.openweathermap.org/data/2.5/weather"
 
     param = {
-        'q':request.form.get('city'),
+        'q':request.form.get("city"),
         'appid':request.form.get('appid'),
         'units':request.form.get('units')
         }
-    request.get(url,param=param)
+    response = requests.get(url,params=param)
     data = response.json()
-    return f"data :{data}"
-
-
-
+    return f"data : {data}"
 
 if __name__ == '__main__':
-    app.run(host="0.0.0.0" , port=5002)
+    app.run(host= "0.0.0.0" , port = 5002)
+
